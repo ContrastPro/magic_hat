@@ -4,27 +4,31 @@ part of 'quiz_bloc.dart';
 class QuizState {
   const QuizState({
     this.status = BlocStatus.initial,
-    this.characters = const [],
     this.successAttempts = 0,
     this.failedAttempts = 0,
+    this.character,
+    this.characters = const [],
   });
 
   final BlocStatus status;
-  final List<CharacterModel> characters;
   final int successAttempts;
   final int failedAttempts;
+  final CharacterModel? character;
+  final List<CharacterModel> characters;
 
   QuizState copyWith({
     BlocStatus? status,
-    List<CharacterModel>? characters,
     int? successAttempts,
     int? failedAttempts,
+    CharacterModel? character,
+    List<CharacterModel>? characters,
   }) {
     return QuizState(
       status: status ?? this.status,
-      characters: characters ?? this.characters,
       successAttempts: successAttempts ?? this.successAttempts,
       failedAttempts: failedAttempts ?? this.failedAttempts,
+      character: character ?? this.character,
+      characters: characters ?? this.characters,
     );
   }
 }

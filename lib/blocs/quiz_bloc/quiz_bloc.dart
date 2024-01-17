@@ -19,7 +19,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     required this.charactersRepository,
     required this.isolateToken,
   }) : super(const QuizState()) {
-    on<LoadCharacters>((event, emit) async {
+    on<LoadQuizData>((event, emit) async {
       emit(
         state.copyWith(
           status: BlocStatus.loading,
@@ -27,6 +27,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       );
 
       final List<CharacterModel> characters = [];
+
       final List<CharacterModel>? savedCharacters =
           await localDB.getCharacters();
 
@@ -56,6 +57,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       emit(
         state.copyWith(
           status: BlocStatus.loaded,
+          characters: characters,
         ),
       );
 
@@ -69,9 +71,60 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         emit(
           state.copyWith(
             status: BlocStatus.success,
-            characters: characters,
             successAttempts: successAttempts,
             failedAttempts: failedAttempts,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: BlocStatus.failed,
+          ),
+        );
+      }
+    });
+
+    on<RestartQuiz>((event, emit) async {
+      emit(
+        state.copyWith(
+          status: BlocStatus.loading,
+        ),
+      );
+
+      await localDB.deleteAllHistoryData();
+
+      final List<CharacterModel> characters = [];
+
+      final List<CharacterModel>? loadedCharacters = await compute(
+        charactersRepository.loadCharacters,
+        IsolateModel(
+          token: isolateToken,
+        ),
+      );
+
+      if (loadedCharacters != null) {
+        await localDB.saveCharacters(
+          characters: loadedCharacters,
+        );
+
+        characters.addAll(
+          loadedCharacters,
+        );
+      }
+
+      emit(
+        state.copyWith(
+          status: BlocStatus.loaded,
+          characters: characters,
+        ),
+      );
+
+      if (characters.isNotEmpty) {
+        emit(
+          state.copyWith(
+            status: BlocStatus.success,
+            successAttempts: 0,
+            failedAttempts: 0,
           ),
         );
       } else {

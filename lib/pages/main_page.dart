@@ -85,7 +85,7 @@ class _MainPageState extends State<MainPage> {
               charactersRepository: _charactersRepository,
               isolateToken: _isolateToken,
             )..add(
-                const LoadCharacters(),
+                const LoadQuizData(),
               ),
           ),
         ],

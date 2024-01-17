@@ -51,32 +51,34 @@ class CustomBottomNavigationBar extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               height: kBottomNavigationBarHeight,
-              child: InkWell(
-                onTap: () => onSelect(index),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      i.icon,
-                      color: index == currentTab
-                          ? AppColors.secondary
-                          : AppColors.primary,
-                    ),
-                    const SizedBox(
-                      height: 3.0,
-                    ),
-                    Text(
-                      i.title,
-                      style: TextStyle(
+              child: Material(
+                child: InkWell(
+                  onTap: () => onSelect(index),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        i.icon,
                         color: index == currentTab
                             ? AppColors.secondary
                             : AppColors.primary,
-                        fontSize: 11.0,
-                        height: 1.18,
                       ),
-                    )
-                  ],
+                      const SizedBox(
+                        height: 3.0,
+                      ),
+                      Text(
+                        i.title,
+                        style: TextStyle(
+                          color: index == currentTab
+                              ? AppColors.secondary
+                              : AppColors.primary,
+                          fontSize: 11.0,
+                          height: 1.18,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

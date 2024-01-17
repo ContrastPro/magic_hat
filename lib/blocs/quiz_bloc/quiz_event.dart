@@ -5,6 +5,18 @@ abstract class QuizEvent {
   const QuizEvent();
 }
 
-class LoadCharacters extends QuizEvent {
-  const LoadCharacters();
+class LoadQuizData extends QuizEvent {
+  const LoadQuizData();
+}
+
+class RestartQuiz extends QuizEvent {
+  const RestartQuiz();
+}
+
+class SelectCharacter extends QuizEvent {
+  const SelectCharacter();
+}
+
+class RestartCharacter extends QuizEvent {
+  const RestartCharacter();
 }
