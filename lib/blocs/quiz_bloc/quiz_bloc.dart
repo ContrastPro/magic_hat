@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +43,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         );
 
         if (loadedCharacters != null) {
+          await localDB.saveCharacters(
+            characters: loadedCharacters,
+          );
+
           characters.addAll(
             loadedCharacters,
           );
@@ -57,15 +59,21 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         ),
       );
 
+      final int successAttempts =
+          characters.fold(0, (p, e) => e.isSuccess == true ? p + 1 : p);
+
+      final int failedAttempts =
+          characters.fold(0, (p, e) => e.isSuccess == false ? p + 1 : p);
+
       if (characters.isNotEmpty) {
         emit(
           state.copyWith(
             status: BlocStatus.success,
             characters: characters,
+            successAttempts: successAttempts,
+            failedAttempts: failedAttempts,
           ),
         );
-
-        log('${state.characters.first}');
       } else {
         emit(
           state.copyWith(

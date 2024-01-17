@@ -76,8 +76,8 @@ class LocalDB {
               ${CharacterModelFields.alternateActors.name} $_stringNullableType,
               ${CharacterModelFields.alive.name} $_intNotNullType,
               ${CharacterModelFields.image.name} $_stringNullableType,
-              ${CharacterModelFields.attempts.name} $_intNotNullType,
-              ${CharacterModelFields.isSuccess.name} $_intNotNullType
+              ${CharacterModelFields.attempts.name} $_intNullableType,
+              ${CharacterModelFields.isSuccess.name} $_intNullableType
             )
           ''',
         );
@@ -89,12 +89,20 @@ class LocalDB {
 
   // [START] Characters data
 
-  Future<void> saveCharacter({
-    required CharacterModel character,
+  Future<void> saveCharacters({
+    required List<CharacterModel> characters,
   }) async {
-    await _charactersDatabase!.insert(
-      characterModelName,
-      character.toJson(),
+    final Batch batch = _charactersDatabase!.batch();
+
+    for (int i = 0; i < characters.length; i++) {
+      batch.insert(
+        characterModelName,
+        characters[i].toJson(),
+      );
+    }
+
+    await batch.commit(
+      noResult: true,
     );
   }
 
@@ -109,11 +117,13 @@ class LocalDB {
 
       for (int i = 0; i < response.length; i++) {
         characters.add(
-          CharacterModel.fromJson(
+          CharacterModel.fromJsonDatabase(
             response[i],
           ),
         );
       }
+
+      return characters;
     }
 
     return null;

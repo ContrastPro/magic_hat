@@ -20,7 +20,7 @@ class CharactersRepository {
 
     if (response.statusCode == 200) {
       final List<CharacterModel> characters = (response.data as List)
-          .map((e) => CharacterModel.fromJson(e))
+          .map((e) => CharacterModel.fromJsonApi(e))
           .toList();
 
       return characters;

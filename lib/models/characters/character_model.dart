@@ -31,55 +31,43 @@ class CharacterModel {
   const CharacterModel({
     required this.id,
     required this.name,
-    required this.alternateNames,
+    this.alternateNames,
     required this.species,
     required this.gender,
-    required this.house,
-    required this.dateOfBirth,
-    required this.yearOfBirth,
+    this.house,
+    this.dateOfBirth,
+    this.yearOfBirth,
     required this.wizard,
-    required this.ancestry,
-    required this.eyeColour,
-    required this.hairColour,
-    required this.wand,
-    required this.patronus,
+    this.ancestry,
+    this.eyeColour,
+    this.hairColour,
+    this.wand,
+    this.patronus,
     required this.hogwartsStudent,
     required this.hogwartsStaff,
-    required this.actor,
-    required this.alternateActors,
+    this.actor,
+    this.alternateActors,
     required this.alive,
-    required this.image,
-    required this.attempts,
-    required this.isSuccess,
+    this.image,
+    this.attempts,
+    this.isSuccess,
   });
 
-  factory CharacterModel.fromJson(Map<String, dynamic> json) {
-    final String alternateNames = json['alternate_names'] is List
-        ? (json['alternate_names'] as List).join(', ')
-        : json['alternate_names'];
-
-    final String alternateActors = json['alternate_actors'] is List
-        ? (json['alternate_actors'] as List).join(', ')
-        : json['alternate_actors'];
-
-    final String wand = jsonEncode(
-      json['wand'],
-    );
+  factory CharacterModel.fromJsonApi(Map<String, dynamic> json) {
+    final String alternateNames = jsonEncode(json['alternate_names']);
+    final String alternateActors = jsonEncode(json['alternate_actors']);
+    final String wand = jsonEncode(json['wand']);
 
     return CharacterModel(
       id: json['id'],
       name: json['name'],
-      alternateNames: alternateNames.isNotEmpty ? alternateNames : null,
+      alternateNames: alternateNames,
       species: json['species'],
       gender: json['gender'],
       house: (json['house'] as String).isNotEmpty ? json['house'] : null,
       dateOfBirth: json['dateOfBirth'],
       yearOfBirth: json['yearOfBirth'],
-      wizard: json['wizard'] is int
-          ? json['wizard'] == 1
-              ? true
-              : false
-          : json['wizard'],
+      wizard: json['wizard'],
       ancestry:
           (json['ancestry'] as String).isNotEmpty ? json['ancestry'] : null,
       eyeColour:
@@ -89,26 +77,43 @@ class CharacterModel {
       wand: wand,
       patronus:
           (json['patronus'] as String).isNotEmpty ? json['patronus'] : null,
-      hogwartsStudent: json['hogwartsStudent'] is int
-          ? json['hogwartsStudent'] == 1
-              ? true
-              : false
-          : json['hogwartsStudent'],
-      hogwartsStaff: json['hogwartsStaff'] is int
-          ? json['hogwartsStaff'] == 1
-              ? true
-              : false
-          : json['hogwartsStaff'],
+      hogwartsStudent: json['hogwartsStudent'],
+      hogwartsStaff: json['hogwartsStaff'],
       actor: (json['actor'] as String).isNotEmpty ? json['actor'] : null,
-      alternateActors: alternateActors.isNotEmpty ? alternateActors : null,
-      alive: json['alive'] is int
-          ? json['alive'] == 1
+      alternateActors: alternateActors,
+      alive: json['alive'],
+      image: (json['image'] as String).isNotEmpty ? json['image'] : null,
+    );
+  }
+
+  factory CharacterModel.fromJsonDatabase(Map<String, dynamic> json) {
+    return CharacterModel(
+      id: json['id'],
+      name: json['name'],
+      alternateNames: json['alternateNames'],
+      species: json['species'],
+      gender: json['gender'],
+      house: json['house'],
+      dateOfBirth: json['dateOfBirth'],
+      yearOfBirth: json['yearOfBirth'],
+      wizard: json['wizard'] == 1 ? true : false,
+      ancestry: json['ancestry'],
+      eyeColour: json['eyeColour'],
+      hairColour: json['hairColour'],
+      wand: json['wand'],
+      patronus: json['patronus'],
+      hogwartsStudent: json['hogwartsStudent'] == 1 ? true : false,
+      hogwartsStaff: json['hogwartsStaff'] == 1 ? true : false,
+      actor: json['actor'],
+      alternateActors: json['alternateActors'],
+      alive: json['alive'] == 1 ? true : false,
+      image: json['image'],
+      attempts: json['attempts'],
+      isSuccess: json['isSuccess'] != null
+          ? json['isSuccess'] == 1
               ? true
               : false
-          : json['alive'],
-      image: (json['image'] as String).isNotEmpty ? json['image'] : null,
-      attempts: json['attempts'] ?? 0,
-      isSuccess: json['isSuccess'] ?? false,
+          : null,
     );
   }
 
@@ -132,8 +137,8 @@ class CharacterModel {
   final String? alternateActors;
   final bool alive;
   final String? image;
-  final int attempts;
-  final bool isSuccess;
+  final int? attempts;
+  final bool? isSuccess;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -157,7 +162,11 @@ class CharacterModel {
         'alive': alive == true ? 1 : 0,
         'image': image,
         'attempts': attempts,
-        'isSuccess': isSuccess == true ? 1 : 0,
+        'isSuccess': isSuccess != null
+            ? isSuccess == true
+                ? 1
+                : 0
+            : null,
       };
 
   @override
