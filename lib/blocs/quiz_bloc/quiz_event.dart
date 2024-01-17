@@ -13,6 +13,10 @@ class RestartQuiz extends QuizEvent {
   const RestartQuiz();
 }
 
+class RefreshCharacter extends QuizEvent {
+  const RefreshCharacter();
+}
+
 class SelectCharacter extends QuizEvent {
   const SelectCharacter();
 }

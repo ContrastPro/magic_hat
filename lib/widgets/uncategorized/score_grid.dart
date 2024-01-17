@@ -31,7 +31,7 @@ class ScoreGrid extends StatelessWidget {
           width: 20.0,
         ),
         _ScoreGridItem(
-          score: successAttempts,
+          score: failedAttempts,
           title: 'Failed',
         ),
       ],
@@ -52,8 +52,8 @@ class _ScoreGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 80.0,
-        color: AppColors.secondary.withOpacity(0.1),
+        height: 90.0,
+        color: AppColors.primary,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -61,6 +61,7 @@ class _ScoreGridItem extends StatelessWidget {
               '$score',
               style: const TextStyle(
                 fontSize: 20.0,
+                color: AppColors.scaffold,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -71,6 +72,7 @@ class _ScoreGridItem extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontSize: 12.0,
+                color: AppColors.scaffold,
               ),
             ),
           ],

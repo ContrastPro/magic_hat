@@ -7,7 +7,9 @@ import '../../database/local_database.dart';
 import '../../models/characters/character_model.dart';
 import '../../models/uncategorized/isolate_model.dart';
 import '../../repositories/characters_repository.dart';
+import '../../services/in_app_notification_service.dart';
 import '../../utils/constants.dart';
+import '../../utils/helpers.dart';
 
 part 'quiz_event.dart';
 
@@ -54,9 +56,14 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         }
       }
 
+      final CharacterModel character = randomCharacter(
+        characters: characters,
+      );
+
       emit(
         state.copyWith(
           status: BlocStatus.loaded,
+          character: character,
           characters: characters,
         ),
       );
@@ -112,14 +119,23 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         );
       }
 
+      final CharacterModel character = randomCharacter(
+        characters: characters,
+      );
+
       emit(
         state.copyWith(
           status: BlocStatus.loaded,
+          character: character,
           characters: characters,
         ),
       );
 
       if (characters.isNotEmpty) {
+        InAppNotificationService.show(
+          title: 'Quiz restarted',
+        );
+
         emit(
           state.copyWith(
             status: BlocStatus.success,
@@ -134,6 +150,43 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           ),
         );
       }
+    });
+
+    on<RefreshCharacter>((event, emit) async {
+      emit(
+        state.copyWith(
+          status: BlocStatus.loading,
+        ),
+      );
+
+      final CharacterModel character = randomCharacter(
+        characters: state.characters,
+      );
+
+      emit(
+        state.copyWith(
+          status: BlocStatus.loaded,
+          character: character,
+        ),
+      );
+
+      InAppNotificationService.show(
+        title: 'Character refreshed',
+      );
+
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+        ),
+      );
+    });
+
+    on<SelectCharacter>((event, emit) async {
+      //
+    });
+
+    on<RestartCharacter>((event, emit) async {
+      //
     });
   }
 
