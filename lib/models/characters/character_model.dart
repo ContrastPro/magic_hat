@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../utils/helpers.dart';
 
 enum CharacterModelFields {

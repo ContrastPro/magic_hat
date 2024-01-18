@@ -31,14 +31,14 @@ String? convertWand({
 CharacterModel randomCharacter({
   required List<CharacterModel> characters,
 }) {
-  final List<CharacterModel> walid =
+  final List<CharacterModel> validCharacters =
       characters.where((e) => e.isSuccess == null).toList();
 
   final int index = randomNumber(
-    walid.length,
+    validCharacters.length,
   );
 
-  final CharacterModel character = walid[index];
+  final CharacterModel character = validCharacters[index];
 
   return character;
 }
@@ -53,5 +53,10 @@ int randomNumber(int max) {
 List<CharacterModel> sortCharacters({
   required List<CharacterModel> characters,
 }) {
-  return characters.where((e) => e.isSuccess != null).toList();
+  final List<CharacterModel> validCharacters =
+      characters.where((e) => e.isSuccess != null).toList();
+
+  validCharacters.sort((a, b) => b.isSuccess == true ? 1 : -1);
+
+  return validCharacters;
 }
