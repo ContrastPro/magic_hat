@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/characters/character_model.dart';
 import '../pages/characters_pages/characters_info_page/characters_info_page.dart';
 import '../pages/characters_pages/characters_list_page/characters_list_page.dart';
 import '../pages/main_page.dart';
@@ -16,7 +17,10 @@ class AppRouter {
     switch (settings.name) {
       // [START] Characters pages
       case CharactersInfoPage.routeName:
-        builder = (_) => const CharactersInfoPage();
+        final CharacterModel args = arguments as CharacterModel;
+        builder = (_) => CharactersInfoPage(
+              character: args,
+            );
         break;
 
       case CharactersListPage.routeName:

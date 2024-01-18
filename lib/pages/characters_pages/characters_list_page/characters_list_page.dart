@@ -10,6 +10,7 @@ import '../../../widgets/loaders/cached_network_image_loader.dart';
 import '../../../widgets/loaders/custom_loader.dart';
 import '../../../widgets/navigation/custom_app_bar.dart';
 import '../../../widgets/uncategorized/score_grid.dart';
+import '../characters_info_page/characters_info_page.dart';
 
 class CharactersListPage extends StatefulWidget {
   const CharactersListPage({super.key});
@@ -33,6 +34,16 @@ class _CharactersListPageState extends State<CharactersListPage> {
             characterId: characterId,
           ),
         );
+  }
+
+  void _navigateToPage(
+    String route, {
+    Object? arguments,
+  }) {
+    Navigator.of(context, rootNavigator: true).pushNamed(
+      route,
+      arguments: arguments,
+    );
   }
 
   @override
@@ -72,6 +83,10 @@ class _CharactersListPageState extends State<CharactersListPage> {
                       characters: state.characters,
                     ),
                     onRestart: _restartCharacter,
+                    onTap: (CharacterModel character) => _navigateToPage(
+                      CharactersInfoPage.routeName,
+                      arguments: character,
+                    ),
                   ),
                 ],
               ),
@@ -91,10 +106,12 @@ class _ChatsContent extends StatelessWidget {
   const _ChatsContent({
     required this.characters,
     required this.onRestart,
+    required this.onTap,
   });
 
   final List<CharacterModel> characters;
   final void Function(String) onRestart;
+  final void Function(CharacterModel) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +124,9 @@ class _ChatsContent extends StatelessWidget {
         ),
         itemBuilder: (_, int i) {
           return GestureDetector(
+            onTap: () => onTap(
+              characters[i],
+            ),
             behavior: HitTestBehavior.opaque,
             child: Container(
               height: 65.0,

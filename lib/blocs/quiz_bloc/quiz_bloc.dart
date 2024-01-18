@@ -187,7 +187,9 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
             ? 1
             : characters[index].attempts! + 1;
 
-        if (characters[index].house == event.selectedHouse) {
+        final bool isInHouse = characters[index].house == event.selectedHouse;
+
+        if (isInHouse) {
           selectedCharacter = characters[index].copyWith(
             attempts: attempts,
             isSuccess: true,
@@ -212,6 +214,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
         emit(
           state.copyWith(
+            successAttempts:
+                isInHouse ? state.successAttempts + 1 : state.successAttempts,
+            failedAttempts:
+                !isInHouse ? state.failedAttempts + 1 : state.failedAttempts,
             character: newCharacter,
             characters: characters,
           ),

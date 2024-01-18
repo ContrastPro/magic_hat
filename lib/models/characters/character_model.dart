@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../../utils/helpers.dart';
+
 enum CharacterModelFields {
   id,
   name,
@@ -54,9 +56,18 @@ class CharacterModel {
   });
 
   factory CharacterModel.fromJsonApi(Map<String, dynamic> json) {
-    final String alternateNames = jsonEncode(json['alternate_names']);
-    final String alternateActors = jsonEncode(json['alternate_actors']);
-    final String wand = jsonEncode(json['wand']);
+    final String? alternateNames = (json['alternate_names'] as List).isNotEmpty
+        ? (json['alternate_names'] as List).join(', ')
+        : null;
+
+    final String? alternateActors =
+        (json['alternate_actors'] as List).isNotEmpty
+            ? (json['alternate_actors'] as List).join(', ')
+            : null;
+
+    final String? wand = convertWand(
+      data: json['wand'],
+    );
 
     return CharacterModel(
       id: json['id'],
