@@ -10,6 +10,9 @@ Implement the mobile application based on Flutter/Dart for iOS & Android platfor
 ## Final task execution time
 - 15h
 
+## Demo video app flow
+> Video uploaded on Google Drive https://drive.google.com/file/d/1zBjz7PR-nrkCRv8ut2JgmGyRbrnX-IyX/view?usp=sharing
+
 ## Requirements
 1. It’s possible to use any state management approach.
 2. It’s allowed to use any UI library/framework to style the application.
