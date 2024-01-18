@@ -4,6 +4,12 @@ Implement the mobile application based on Flutter/Dart for iOS & Android platfor
 
 > API: https://hp-api.onrender.com
 
+## Estimated deadline for project completion
+- 32h
+
+## Final task execution time
+- 15h
+
 ## Requirements
 1. It’s possible to use any state management approach.
 2. It’s allowed to use any UI library/framework to style the application.
