@@ -7,6 +7,7 @@ import '../../../widgets/animations/fade_in_animation.dart';
 import '../../../widgets/loaders/cached_network_image_loader.dart';
 import '../../../widgets/loaders/custom_loader.dart';
 import '../../../widgets/navigation/custom_app_bar.dart';
+import '../../../widgets/uncategorized/house_grid.dart';
 import '../../../widgets/uncategorized/score_grid.dart';
 
 class QuizPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  void _resetQuiz() {
+  void _restartQuiz() {
     context.read<QuizBloc>().add(
           const RestartQuiz(),
         );
@@ -31,6 +32,18 @@ class _QuizPageState extends State<QuizPage> {
         );
   }
 
+  void _selectCharacter({
+    required String characterId,
+    String? selectedHouse,
+  }) {
+    context.read<QuizBloc>().add(
+          SelectCharacter(
+            characterId: characterId,
+            selectedHouse: selectedHouse,
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +52,7 @@ class _QuizPageState extends State<QuizPage> {
         action: const Text(
           'Reset',
         ),
-        onAction: _resetQuiz,
+        onAction: _restartQuiz,
       ),
       body: BlocBuilder<QuizBloc, QuizState>(
         builder: (_, state) {
@@ -81,6 +94,15 @@ class _QuizPageState extends State<QuizPage> {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    HouseGrid(
+                      onTap: (String? house) => _selectCharacter(
+                        characterId: state.character!.id,
+                        selectedHouse: house,
+                      ),
                     ),
                   ],
                 ),

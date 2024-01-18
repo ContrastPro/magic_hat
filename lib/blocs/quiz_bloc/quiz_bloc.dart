@@ -153,21 +153,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     });
 
     on<RefreshCharacter>((event, emit) async {
-      emit(
-        state.copyWith(
-          status: BlocStatus.loading,
-        ),
-      );
-
       final CharacterModel character = randomCharacter(
         characters: state.characters,
-      );
-
-      emit(
-        state.copyWith(
-          status: BlocStatus.loaded,
-          character: character,
-        ),
       );
 
       InAppNotificationService.show(
@@ -176,17 +163,92 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
       emit(
         state.copyWith(
-          status: BlocStatus.success,
+          character: character,
         ),
       );
     });
 
     on<SelectCharacter>((event, emit) async {
-      //
+      final List<CharacterModel> characters = [...state.characters];
+
+      final remainingAttempts =
+          characters.fold(0, (p, e) => e.isSuccess == null ? p + 1 : p);
+
+      if (remainingAttempts > 1) {
+        final int index = characters.indexWhere(
+          (e) => e.id == event.characterId,
+        );
+
+        if (index == -1) return;
+
+        CharacterModel selectedCharacter;
+
+        final int attempts = characters[index].attempts == null
+            ? 1
+            : characters[index].attempts! + 1;
+
+        if (characters[index].house == event.selectedHouse) {
+          selectedCharacter = characters[index].copyWith(
+            attempts: attempts,
+            isSuccess: true,
+          );
+        } else {
+          selectedCharacter = characters[index].copyWith(
+            attempts: attempts,
+            isSuccess: false,
+          );
+        }
+
+        await localDB.updateCharacters(
+          characterId: selectedCharacter.id,
+          character: selectedCharacter,
+        );
+
+        characters[index] = selectedCharacter;
+
+        final CharacterModel newCharacter = randomCharacter(
+          characters: characters,
+        );
+
+        emit(
+          state.copyWith(
+            character: newCharacter,
+            characters: characters,
+          ),
+        );
+      } else {
+        add(
+          const RestartQuiz(),
+        );
+      }
     });
 
     on<RestartCharacter>((event, emit) async {
-      //
+      final List<CharacterModel> characters = [...state.characters];
+
+      final int index = characters.indexWhere(
+        (e) => e.id == event.characterId,
+      );
+
+      if (index == -1) return;
+
+      final CharacterModel character = characters[index].copyWithNull(
+        attempts: characters[index].attempts,
+        isSuccess: null,
+      );
+
+      await localDB.updateCharacters(
+        characterId: character.id,
+        character: character,
+      );
+
+      characters[index] = character;
+
+      emit(
+        state.copyWith(
+          characters: characters,
+        ),
+      );
     });
   }
 

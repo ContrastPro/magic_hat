@@ -23,7 +23,16 @@ class CharactersRepository {
           .map((e) => CharacterModel.fromJsonApi(e))
           .toList();
 
-      return characters;
+      //todo
+      return [
+        characters[0],
+        characters[1],
+        characters[2],
+        characters[3],
+        characters[4],
+      ];
+
+      //return characters;
     }
 
     return null;

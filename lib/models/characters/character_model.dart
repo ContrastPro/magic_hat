@@ -140,6 +140,106 @@ class CharacterModel {
   final int? attempts;
   final bool? isSuccess;
 
+  CharacterModel copyWith({
+    String? id,
+    String? name,
+    String? alternateNames,
+    String? species,
+    String? gender,
+    String? house,
+    String? dateOfBirth,
+    int? yearOfBirth,
+    bool? wizard,
+    String? ancestry,
+    String? eyeColour,
+    String? hairColour,
+    String? wand,
+    String? patronus,
+    bool? hogwartsStudent,
+    bool? hogwartsStaff,
+    String? actor,
+    String? alternateActors,
+    bool? alive,
+    String? image,
+    int? attempts,
+    bool? isSuccess,
+  }) {
+    return CharacterModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      alternateNames: alternateNames ?? this.alternateNames,
+      species: species ?? this.species,
+      gender: gender ?? this.gender,
+      house: house ?? this.house,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      yearOfBirth: yearOfBirth ?? this.yearOfBirth,
+      wizard: wizard ?? this.wizard,
+      ancestry: ancestry ?? this.ancestry,
+      eyeColour: eyeColour ?? this.eyeColour,
+      hairColour: hairColour ?? this.hairColour,
+      wand: wand ?? this.wand,
+      patronus: patronus ?? this.patronus,
+      hogwartsStudent: hogwartsStudent ?? this.hogwartsStudent,
+      hogwartsStaff: hogwartsStaff ?? this.hogwartsStaff,
+      actor: actor ?? this.actor,
+      alternateActors: alternateActors ?? this.alternateActors,
+      alive: alive ?? this.alive,
+      image: image ?? this.image,
+      attempts: attempts ?? this.attempts,
+      isSuccess: isSuccess ?? this.isSuccess,
+    );
+  }
+
+  CharacterModel copyWithNull({
+    String? id,
+    String? name,
+    String? alternateNames,
+    String? species,
+    String? gender,
+    String? house,
+    String? dateOfBirth,
+    int? yearOfBirth,
+    bool? wizard,
+    String? ancestry,
+    String? eyeColour,
+    String? hairColour,
+    String? wand,
+    String? patronus,
+    bool? hogwartsStudent,
+    bool? hogwartsStaff,
+    String? actor,
+    String? alternateActors,
+    bool? alive,
+    String? image,
+    required int? attempts,
+    required bool? isSuccess,
+  }) {
+    return CharacterModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      alternateNames: alternateNames ?? this.alternateNames,
+      species: species ?? this.species,
+      gender: gender ?? this.gender,
+      house: house ?? this.house,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      yearOfBirth: yearOfBirth ?? this.yearOfBirth,
+      wizard: wizard ?? this.wizard,
+      ancestry: ancestry ?? this.ancestry,
+      eyeColour: eyeColour ?? this.eyeColour,
+      hairColour: hairColour ?? this.hairColour,
+      wand: wand ?? this.wand,
+      patronus: patronus ?? this.patronus,
+      hogwartsStudent: hogwartsStudent ?? this.hogwartsStudent,
+      hogwartsStaff: hogwartsStaff ?? this.hogwartsStaff,
+      actor: actor ?? this.actor,
+      alternateActors: alternateActors ?? this.alternateActors,
+      alive: alive ?? this.alive,
+      image: image ?? this.image,
+      attempts: attempts,
+      isSuccess: isSuccess,
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
@@ -168,9 +268,4 @@ class CharacterModel {
                 : 0
             : null,
       };
-
-  @override
-  String toString() {
-    return 'CharacterModel{id: $id, name: $name, alternateNames: $alternateNames, species: $species, gender: $gender, house: $house, dateOfBirth: $dateOfBirth, yearOfBirth: $yearOfBirth, wizard: $wizard, ancestry: $ancestry, eyeColour: $eyeColour, hairColour: $hairColour, wand: $wand, patronus: $patronus, hogwartsStudent: $hogwartsStudent, hogwartsStaff: $hogwartsStaff, actor: $actor, alternateActors: $alternateActors, alive: $alive, image: $image, attempts: $attempts, isSuccess: $isSuccess}';
-  }
 }

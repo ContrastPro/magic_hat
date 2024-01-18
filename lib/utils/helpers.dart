@@ -5,19 +5,14 @@ import '../models/characters/character_model.dart';
 CharacterModel randomCharacter({
   required List<CharacterModel> characters,
 }) {
-  CharacterModel? character;
+  final List<CharacterModel> walid =
+      characters.where((e) => e.isSuccess == null).toList();
 
-  while (character == null) {
-    final int index = randomNumber(
-      characters.length,
-    );
+  final int index = randomNumber(
+    walid.length,
+  );
 
-    final CharacterModel temp = characters[index];
-
-    if (temp.isSuccess == null) {
-      character = temp;
-    }
-  }
+  final CharacterModel character = walid[index];
 
   return character;
 }
@@ -27,4 +22,10 @@ int randomNumber(int max) {
   final Random random = Random(now.millisecondsSinceEpoch);
 
   return random.nextInt(max);
+}
+
+List<CharacterModel> sortCharacters({
+  required List<CharacterModel> characters,
+}) {
+  return characters.where((e) => e.isSuccess != null).toList();
 }

@@ -129,6 +129,18 @@ class LocalDB {
     return null;
   }
 
+  Future<void> updateCharacters({
+    required String characterId,
+    required CharacterModel character,
+  }) async {
+    await _charactersDatabase!.update(
+      characterModelName,
+      character.toJson(),
+      where: '${CharacterModelFields.id.name} = ?',
+      whereArgs: [characterId],
+    );
+  }
+
   // [END] Characters data
 
   // [START] Service

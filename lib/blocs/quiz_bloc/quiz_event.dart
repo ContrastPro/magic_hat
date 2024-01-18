@@ -18,9 +18,19 @@ class RefreshCharacter extends QuizEvent {
 }
 
 class SelectCharacter extends QuizEvent {
-  const SelectCharacter();
+  const SelectCharacter({
+    required this.characterId,
+    this.selectedHouse,
+  });
+
+  final String characterId;
+  final String? selectedHouse;
 }
 
 class RestartCharacter extends QuizEvent {
-  const RestartCharacter();
+  const RestartCharacter({
+    required this.characterId,
+  });
+
+  final String characterId;
 }
